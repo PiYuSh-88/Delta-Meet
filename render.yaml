@@ -1,0 +1,51 @@
+# Render Blueprint — FREE tier (no paid disk)
+# Dashboard: New → Blueprint → connect github.com/tanmay2765/Delta
+# After deploy, set CORS_ORIGINS and VITE_API_URL manually (see LIVE_DEPLOY.md)
+
+services:
+  - type: web
+    name: delta-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:///./delta.db
+      - key: CORS_ORIGINS
+        sync: false
+      - key: METERED_TURN_API_KEY
+        sync: false
+      - key: METERED_TURN_CREDENTIALS_URL
+        sync: false
+      - key: TURN_URLS
+        sync: false
+      - key: TURN_USERNAME
+        sync: false
+      - key: TURN_CREDENTIAL
+        sync: false
+      - key: STUN_URLS
+        sync: false
+
+  - type: web
+    name: delta-frontend
+    runtime: docker
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
+    plan: free
+    envVars:
+      - key: VITE_API_URL
+        sync: false
+      - key: VITE_TURN_URL
+        sync: false
+      - key: VITE_TURN_USERNAME
+        sync: false
+      - key: VITE_TURN_CREDENTIAL
+        sync: false
+      - key: VITE_WEBRTC_DEBUG
+        sync: false
+      - key: PORT
+        value: "8081"
